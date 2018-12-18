@@ -1,17 +1,18 @@
 //Dependencies
 const express = require("express");
 const router = express.Router();
-const burger = require("../models/burger.js");
+// const burger = require("../models/burger.js");
+const connection = require('../config/connection');
 
 //GET CRUD Method that displays the main page with the burgers
 router.get("/", function (req, res) {
-    burger.selectAll(function (data) {
-        var burgerOrder = {
-            burgers: data
-        };
-        console.log(burgerOrder);
-        res.render("index", burgerOrder);
-    });
+    connection.query('SELECT * FROM testTable', function (error, results) {
+	  if (error) {
+	  	res.json({ message: 'Ooops, something happen' });
+	  }
+	  console.log('Results: ', results);
+	  res.render('index', results);
+	});
 });
 
 //POST CRUD Method that creates and puts in the burger order
